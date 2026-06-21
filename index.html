@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Registration - Gujarat Technological University</title>
+  
+</head>
+<body>
+
+  <nav>
+    <span>Gujarat Technological University</span>
+    <ul>
+      <li><a href="#registration">Register</a></li>
+      <li><a href="#enrolled">Students</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+  </nav>
+
+  
+
+  <main>
+
+    <section id="registration">
+      <h2>New Student Registration</h2>
+
+      <form action="#" method="post">
+
+        <fieldset>
+          <legend>Personal Details</legend>
+          <div class="form-grid">
+
+            <div class="field">
+              <label for="first-name">First Name <span class="req">*</span></label>
+              <input type="text" id="first-name" name="first_name" placeholder="e.g. Priya"
+                     required minlength="2" maxlength="50" autocomplete="given-name" />
+            </div>
+
+            <div class="field">
+              <label for="last-name">Last Name <span class="req">*</span></label>
+              <input type="text" id="last-name" name="last_name" placeholder="e.g. Sharma"
+                     required minlength="2" maxlength="50" autocomplete="family-name" />
+            </div>
+
+            <div class="field">
+              <label for="email">Email Address <span class="req">*</span></label>
+              <input type="email" id="email" name="email" placeholder="name@example.com"
+                     required autocomplete="email" />
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210"
+                     required pattern="[0-9+\s\-]{7,15}" autocomplete="tel" />
+            </div>
+
+            <div class="field">
+              <label for="dob">Date of Birth <span class="req">*</span></label>
+              <input type="date" id="dob" name="dob" required min="1970-01-01" max="2010-12-31" />
+            </div>
+
+            <div class="field">
+              <label for="roll">Enrollment Number</label>
+              <input type="text" id="roll" name="roll_number" placeholder="Auto-assigned"
+                     readonly />
+            </div>
+
+            <div class="field full">
+              <span class="group-label" id="gender-label">Gender <span class="req">*</span></span>
+              <div class="radio-group" role="group" aria-labelledby="gender-label">
+                <label><input type="radio" name="gender" value="male" required /> Male</label>
+                <label><input type="radio" name="gender" value="female" /> Female</label>
+                <label><input type="radio" name="gender" value="other" /> Other</label>
+                <label><input type="radio" name="gender" value="prefer_not" /> Prefer not to say</label>
+              </div>
+            </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Academic Details</legend>
+          <div class="form-grid">
+
+            <div class="field">
+              <label for="course">Programme <span class="req">*</span></label>
+              <select id="course" name="course" required>
+                <option value="" disabled selected>-- Select a Programme --</option>
+                <optgroup label="Undergraduate">
+                  <option value="be-ce">B.E. Computer Engineering</option>
+                  <option value="be-it">B.E. Information Technology</option>
+                  <option value="be-ec">B.E. Electronics &amp; Communication</option>
+                  <option value="be-me">B.E. Mechanical Engineering</option>
+                  <option value="be-civil">B.E. Civil Engineering</option>
+                  <option value="bca">BCA</option>
+                </optgroup>
+                <optgroup label="Postgraduate">
+                  <option value="mtech-cs">M.Tech. Computer Science</option>
+                  <option value="mca">MCA</option>
+                  <option value="mba">MBA</option>
+                </optgroup>
+                <optgroup label="Diploma">
+                  <option value="dip-ce">Diploma in Computer Engineering</option>
+                  <option value="dip-me">Diploma in Mechanical Engineering</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="year">Academic Year <span class="req">*</span></label>
+              <select id="year" name="academic_year" required>
+                <option value="" disabled selected>-- Select Year --</option>
+                <option value="2026-27">2026 – 27</option>
+                <option value="2025-26">2025 – 26</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="prev-school">Previous Institution</label>
+              <input type="text" id="prev-school" name="prev_school"
+                     placeholder="Name of school / college" maxlength="100" />
+            </div>
+
+            <div class="field">
+              <label for="percentage">Previous Score (%)</label>
+              <input type="number" id="percentage" name="percentage"
+                     placeholder="e.g. 85.4" min="0" max="100" step="0.1" />
+            </div>
+
+            <div class="field full">
+              <span class="group-label" id="skills-label">Skills / Interests</span>
+              <div class="checkbox-group" role="group" aria-labelledby="skills-label">
+                <label><input type="checkbox" name="skills" value="programming" /> Programming</label>
+                <label><input type="checkbox" name="skills" value="design" /> Design</label>
+                <label><input type="checkbox" name="skills" value="mathematics" /> Mathematics</label>
+                <label><input type="checkbox" name="skills" value="communication" /> Communication</label>
+                <label><input type="checkbox" name="skills" value="research" /> Research</label>
+                <label><input type="checkbox" name="skills" value="leadership" /> Leadership</label>
+                <label><input type="checkbox" name="skills" value="languages" /> Languages</label>
+              </div>
+            </div>
+
+            <div class="field full">
+              <label for="address">Correspondence Address</label>
+              <textarea id="address" name="address" rows="3"
+                        placeholder="House No., Street, City, State, PIN"
+                        maxlength="300" autocomplete="street-address"></textarea>
+            </div>
+
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label style="display:flex; align-items:flex-start; gap:8px; font-weight:normal;">
+            <input type="checkbox" name="declaration" required style="margin-top:3px;" />
+            I confirm that all information provided is accurate and I agree to the
+            <a href="#">Terms &amp; Conditions</a> of Gujarat Technological University.
+            <span class="req">*</span>
+          </label>
+        </div>
+
+        <button type="submit">Submit Registration</button>
+
+      </form>
+    </section>
+
+    <section id="enrolled">
+      <h2>Registered Students</h2>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Enrollment No.</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Programme</th>
+            <th scope="col">Year</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GTU-2026-001</td>
+            <td>Ananya Patel</td>
+            <td>B.E. Computer Engineering</td>
+            <td>2026–27</td>
+            <td>Female</td>
+            <td>Enrolled</td>
+          </tr>
+          <tr>
+            <td>GTU-2026-002</td>
+            <td>Rohan Mehta</td>
+            <td>MBA</td>
+            <td>2026–27</td>
+            <td>Male</td>
+            <td>Enrolled</td>
+          </tr>
+          <tr>
+            <td>GTU-2026-003</td>
+            <td>Sanya Kapoor</td>
+            <td>Diploma in Computer Engineering</td>
+            <td>2026–27</td>
+            <td>Female</td>
+            <td>Pending</td>
+          </tr>
+          <tr>
+            <td>GTU-2026-004</td>
+            <td>Dev Joshi</td>
+            <td>M.Tech. Computer Science</td>
+            <td>2026–27</td>
+            <td>Male</td>
+            <td>Applied</td>
+          </tr>
+          <tr>
+            <td>GTU-2026-005</td>
+            <td>Fatima Sheikh</td>
+            <td>B.E. Information Technology</td>
+            <td>2026–27</td>
+            <td>Female</td>
+            <td>Enrolled</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    <p><strong>Gujarat Technological University</strong></p>
+    <p>Nr. Vishwakarma Government Engineering College, Nr. Visat Three Roads, Visat - Gandhinagar Highway, Chandkheda, Ahmedabad - 382424</p>
+    <p>Email: <a href="mailto:info@gtu.ac.in">info@gtu.ac.in</a> &nbsp;|&nbsp; Phone: +91 79 2326 7500</p>
+    <p>&copy; 2026 Gujarat Technological University. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
