@@ -3,233 +3,424 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Registration - Gujarat Technological University</title>
-  
+  <title>To-Do App</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f4f4f5;
+      color: #111;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* ── HEADER ── */
+    .header { margin-bottom: 28px; }
+    .header h1 { font-size: 28px; font-weight: 600; color: #111; }
+    .header p  { font-size: 14px; color: #777; margin-top: 4px; }
+
+    /* ── INPUT ROW ── */
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .input-row input {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1.5px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-row input:focus { border-color: #6366f1; }
+
+    .input-row select {
+      padding: 10px 12px;
+      font-size: 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-add:hover  { background: #4f46e5; }
+    .btn-add:active { transform: scale(0.97); }
+
+    /* ── ERROR ── */
+    .error {
+      min-height: 20px;
+      font-size: 13px;
+      color: #ef4444;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .stat {
+      background: #fff;
+      border: 1px solid #e4e4e7;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .stat-label { font-size: 12px; color: #888; margin-bottom: 2px; }
+    .stat-value { font-size: 22px; font-weight: 600; color: #111; }
+
+    /* ── FILTERS ── */
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .filter-btn {
+      font-size: 13px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      border: 1.5px solid #ddd;
+      background: #fff;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover  { border-color: #6366f1; color: #6366f1; }
+    .filter-btn.active {
+      background: #6366f1;
+      border-color: #6366f1;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* ── TASK LIST ── */
+    .task-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border: 1px solid #e4e4e7;
+      border-radius: 12px;
+      padding: 12px 14px;
+      transition: border-color 0.2s, opacity 0.2s;
+      animation: slide-in 0.2s ease;
+    }
+    .task-item:hover { border-color: #c7d2fe; }
+    .task-item.done  { opacity: 0.55; }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* checkbox circle */
+    .task-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #d1d5db;
+      background: transparent;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #fff;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .task-check.checked {
+      background: #22c55e;
+      border-color: #22c55e;
+    }
+
+    .task-text {
+      flex: 1;
+      font-size: 15px;
+      color: #111;
+      word-break: break-word;
+    }
+    .task-item.done .task-text {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    /* tag pill */
+    .task-tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tag-work     { background: #eff6ff; color: #3b82f6; }
+    .tag-personal { background: #f0fdf4; color: #16a34a; }
+    .tag-urgent   { background: #fef2f2; color: #ef4444; }
+    .tag-general  { background: #f4f4f5; color: #777; }
+
+    /* delete button */
+    .task-delete {
+      flex-shrink: 0;
+      background: transparent;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .task-delete:hover { color: #ef4444; background: #fef2f2; }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+      font-size: 14px;
+    }
+    .empty i { font-size: 36px; display: block; margin-bottom: 10px; opacity: 0.4; }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: right;
+      margin-top: 10px;
+    }
+    .clear-btn {
+      font-size: 13px;
+      color: #ef4444;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .clear-btn:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .input-row { flex-wrap: wrap; }
+      .input-row input { flex: 1 1 100%; }
+      .stats { grid-template-columns: repeat(3, 1fr); }
+      .btn-add { width: 100%; justify-content: center; }
+    }
+  </style>
 </head>
 <body>
+<div id="app">
 
-  <nav>
-    <span>Gujarat Technological University</span>
-    <ul>
-      <li><a href="#registration">Register</a></li>
-      <li><a href="#enrolled">Students</a></li>
-      <li><a href="#footer">Contact</a></li>
-    </ul>
-  </nav>
+  <div class="header">
+    <h1>My Tasks</h1>
+    <p>Stay on top of what matters</p>
+  </div>
 
-  
+  <div class="input-row">
+    <input type="text" id="task-input" placeholder="Add a new task…" maxlength="120" aria-label="New task" />
+    <select id="tag-select" aria-label="Category">
+      <option value="general">General</option>
+      <option value="work">Work</option>
+      <option value="personal">Personal</option>
+      <option value="urgent">Urgent</option>
+    </select>
+    <button class="btn-add" onclick="addTask()">
+      <i class="ti ti-plus"></i> Add
+    </button>
+  </div>
 
-  <main>
+  <div class="error" id="error-msg" role="alert" aria-live="polite"></div>
 
-    <section id="registration">
-      <h2>New Student Registration</h2>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total</div>
+      <div class="stat-value" id="stat-total">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Completed</div>
+      <div class="stat-value" id="stat-done">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Remaining</div>
+      <div class="stat-value" id="stat-remaining">0</div>
+    </div>
+  </div>
 
-      <form action="#" method="post">
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('active', this)">Active</button>
+    <button class="filter-btn" onclick="setFilter('done', this)">Completed</button>
+    <button class="filter-btn" onclick="setFilter('work', this)">Work</button>
+    <button class="filter-btn" onclick="setFilter('personal', this)">Personal</button>
+    <button class="filter-btn" onclick="setFilter('urgent', this)">Urgent</button>
+  </div>
 
-        <fieldset>
-          <legend>Personal Details</legend>
-          <div class="form-grid">
+  <div class="task-list" id="task-list"></div>
 
-            <div class="field">
-              <label for="first-name">First Name <span class="req">*</span></label>
-              <input type="text" id="first-name" name="first_name" placeholder="e.g. Priya"
-                     required minlength="2" maxlength="50" autocomplete="given-name" />
-            </div>
+  <div class="footer">
+    <button class="clear-btn" onclick="clearCompleted()">Clear completed</button>
+  </div>
 
-            <div class="field">
-              <label for="last-name">Last Name <span class="req">*</span></label>
-              <input type="text" id="last-name" name="last_name" placeholder="e.g. Sharma"
-                     required minlength="2" maxlength="50" autocomplete="family-name" />
-            </div>
+</div>
 
-            <div class="field">
-              <label for="email">Email Address <span class="req">*</span></label>
-              <input type="email" id="email" name="email" placeholder="name@example.com"
-                     required autocomplete="email" />
-            </div>
+<script>
+  /* ── DATA ──────────────────────────────── */
+  let tasks = [
+    { id: 1, text: 'Book a table at Bombay Bustle', done: false, tag: 'personal' },
+    { id: 2, text: 'Review Q2 budget report',        done: false, tag: 'work'     },
+    { id: 3, text: 'Buy groceries',                  done: true,  tag: 'general'  },
+  ];
+  let nextId = 4;
+  let currentFilter = 'all';
 
-            <div class="field">
-              <label for="phone">Phone Number <span class="req">*</span></label>
-              <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210"
-                     required pattern="[0-9+\s\-]{7,15}" autocomplete="tel" />
-            </div>
+  /* ── VALIDATION ────────────────────────── */
+  function validate(text) {
+    if (!text.trim())           return 'Task cannot be empty.';
+    if (text.trim().length < 3) return 'Task must be at least 3 characters.';
+    if (tasks.some(t => t.text.toLowerCase() === text.trim().toLowerCase()))
+                                return 'This task already exists.';
+    return null;
+  }
 
-            <div class="field">
-              <label for="dob">Date of Birth <span class="req">*</span></label>
-              <input type="date" id="dob" name="dob" required min="1970-01-01" max="2010-12-31" />
-            </div>
+  function showError(msg) {
+    document.getElementById('error-msg').innerHTML =
+      msg ? `<i class="ti ti-alert-circle"></i> ${msg}` : '';
+  }
 
-            <div class="field">
-              <label for="roll">Enrollment Number</label>
-              <input type="text" id="roll" name="roll_number" placeholder="Auto-assigned"
-                     readonly />
-            </div>
+  /* ── TASK OPERATIONS ───────────────────── */
+  function addTask() {
+    const input = document.getElementById('task-input');
+    const tag   = document.getElementById('tag-select').value;
+    const err   = validate(input.value);
+    if (err) { showError(err); input.focus(); return; }
 
-            <div class="field full">
-              <span class="group-label" id="gender-label">Gender <span class="req">*</span></span>
-              <div class="radio-group" role="group" aria-labelledby="gender-label">
-                <label><input type="radio" name="gender" value="male" required /> Male</label>
-                <label><input type="radio" name="gender" value="female" /> Female</label>
-                <label><input type="radio" name="gender" value="other" /> Other</label>
-                <label><input type="radio" name="gender" value="prefer_not" /> Prefer not to say</label>
-              </div>
-            </div>
+    showError('');
+    tasks.push({ id: nextId++, text: input.value.trim(), done: false, tag });
+    input.value = '';
+    input.focus();
+    render();
+  }
 
-          </div>
-        </fieldset>
+  function toggleTask(id) {
+    const t = tasks.find(t => t.id === id);
+    if (t) { t.done = !t.done; render(); }
+  }
 
-        <fieldset>
-          <legend>Academic Details</legend>
-          <div class="form-grid">
+  function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+    render();
+  }
 
-            <div class="field">
-              <label for="course">Programme <span class="req">*</span></label>
-              <select id="course" name="course" required>
-                <option value="" disabled selected>-- Select a Programme --</option>
-                <optgroup label="Undergraduate">
-                  <option value="be-ce">B.E. Computer Engineering</option>
-                  <option value="be-it">B.E. Information Technology</option>
-                  <option value="be-ec">B.E. Electronics &amp; Communication</option>
-                  <option value="be-me">B.E. Mechanical Engineering</option>
-                  <option value="be-civil">B.E. Civil Engineering</option>
-                  <option value="bca">BCA</option>
-                </optgroup>
-                <optgroup label="Postgraduate">
-                  <option value="mtech-cs">M.Tech. Computer Science</option>
-                  <option value="mca">MCA</option>
-                  <option value="mba">MBA</option>
-                </optgroup>
-                <optgroup label="Diploma">
-                  <option value="dip-ce">Diploma in Computer Engineering</option>
-                  <option value="dip-me">Diploma in Mechanical Engineering</option>
-                </optgroup>
-              </select>
-            </div>
+  function clearCompleted() {
+    tasks = tasks.filter(t => !t.done);
+    render();
+  }
 
-            <div class="field">
-              <label for="year">Academic Year <span class="req">*</span></label>
-              <select id="year" name="academic_year" required>
-                <option value="" disabled selected>-- Select Year --</option>
-                <option value="2026-27">2026 – 27</option>
-                <option value="2025-26">2025 – 26</option>
-              </select>
-            </div>
+  /* ── FILTERING ─────────────────────────── */
+  function setFilter(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn')
+            .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  }
 
-            <div class="field">
-              <label for="prev-school">Previous Institution</label>
-              <input type="text" id="prev-school" name="prev_school"
-                     placeholder="Name of school / college" maxlength="100" />
-            </div>
+  function getFiltered() {
+    if (currentFilter === 'all')    return tasks;
+    if (currentFilter === 'active') return tasks.filter(t => !t.done);
+    if (currentFilter === 'done')   return tasks.filter(t =>  t.done);
+    return tasks.filter(t => t.tag === currentFilter);
+  }
 
-            <div class="field">
-              <label for="percentage">Previous Score (%)</label>
-              <input type="number" id="percentage" name="percentage"
-                     placeholder="e.g. 85.4" min="0" max="100" step="0.1" />
-            </div>
+  /* ── DOM RENDERING ─────────────────────── */
+  function render() {
+    const total = tasks.length;
+    const done  = tasks.filter(t => t.done).length;
+    document.getElementById('stat-total').textContent     = total;
+    document.getElementById('stat-done').textContent      = done;
+    document.getElementById('stat-remaining').textContent = total - done;
 
-            <div class="field full">
-              <span class="group-label" id="skills-label">Skills / Interests</span>
-              <div class="checkbox-group" role="group" aria-labelledby="skills-label">
-                <label><input type="checkbox" name="skills" value="programming" /> Programming</label>
-                <label><input type="checkbox" name="skills" value="design" /> Design</label>
-                <label><input type="checkbox" name="skills" value="mathematics" /> Mathematics</label>
-                <label><input type="checkbox" name="skills" value="communication" /> Communication</label>
-                <label><input type="checkbox" name="skills" value="research" /> Research</label>
-                <label><input type="checkbox" name="skills" value="leadership" /> Leadership</label>
-                <label><input type="checkbox" name="skills" value="languages" /> Languages</label>
-              </div>
-            </div>
+    const list     = document.getElementById('task-list');
+    const filtered = getFiltered();
 
-            <div class="field full">
-              <label for="address">Correspondence Address</label>
-              <textarea id="address" name="address" rows="3"
-                        placeholder="House No., Street, City, State, PIN"
-                        maxlength="300" autocomplete="street-address"></textarea>
-            </div>
+    if (!filtered.length) {
+      list.innerHTML = `
+        <div class="empty">
+          <i class="ti ti-checkbox"></i>
+          ${currentFilter === 'all'
+            ? 'No tasks yet. Add one above!'
+            : 'No tasks in this category.'}
+        </div>`;
+      return;
+    }
 
-          </div>
-        </fieldset>
+    list.innerHTML = filtered.map(t => `
+      <div class="task-item${t.done ? ' done' : ''}" id="task-${t.id}">
+        <button class="task-check${t.done ? ' checked' : ''}"
+                onclick="toggleTask(${t.id})"
+                aria-label="${t.done ? 'Mark incomplete' : 'Mark complete'}">
+          ${t.done ? '<i class="ti ti-check"></i>' : ''}
+        </button>
+        <span class="task-text">${escHtml(t.text)}</span>
+        <span class="task-tag tag-${t.tag}">${t.tag}</span>
+        <button class="task-delete" onclick="deleteTask(${t.id})" aria-label="Delete task">
+          <i class="ti ti-trash"></i>
+        </button>
+      </div>
+    `).join('');
+  }
 
-        <div class="field">
-          <label style="display:flex; align-items:flex-start; gap:8px; font-weight:normal;">
-            <input type="checkbox" name="declaration" required style="margin-top:3px;" />
-            I confirm that all information provided is accurate and I agree to the
-            <a href="#">Terms &amp; Conditions</a> of Gujarat Technological University.
-            <span class="req">*</span>
-          </label>
-        </div>
+  /* ── UTILITIES ─────────────────────────── */
+  function escHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
 
-        <button type="submit">Submit Registration</button>
+  /* ── EVENT LISTENERS ───────────────────── */
+  document.getElementById('task-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addTask();
+    else showError('');
+  });
 
-      </form>
-    </section>
-
-    <section id="enrolled">
-      <h2>Registered Students</h2>
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">Enrollment No.</th>
-            <th scope="col">Student Name</th>
-            <th scope="col">Programme</th>
-            <th scope="col">Year</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>GTU-2026-001</td>
-            <td>Ananya Patel</td>
-            <td>B.E. Computer Engineering</td>
-            <td>2026–27</td>
-            <td>Female</td>
-            <td>Enrolled</td>
-          </tr>
-          <tr>
-            <td>GTU-2026-002</td>
-            <td>Rohan Mehta</td>
-            <td>MBA</td>
-            <td>2026–27</td>
-            <td>Male</td>
-            <td>Enrolled</td>
-          </tr>
-          <tr>
-            <td>GTU-2026-003</td>
-            <td>Sanya Kapoor</td>
-            <td>Diploma in Computer Engineering</td>
-            <td>2026–27</td>
-            <td>Female</td>
-            <td>Pending</td>
-          </tr>
-          <tr>
-            <td>GTU-2026-004</td>
-            <td>Dev Joshi</td>
-            <td>M.Tech. Computer Science</td>
-            <td>2026–27</td>
-            <td>Male</td>
-            <td>Applied</td>
-          </tr>
-          <tr>
-            <td>GTU-2026-005</td>
-            <td>Fatima Sheikh</td>
-            <td>B.E. Information Technology</td>
-            <td>2026–27</td>
-            <td>Female</td>
-            <td>Enrolled</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-  </main>
-
-  <footer id="footer">
-    <p><strong>Gujarat Technological University</strong></p>
-    <p>Nr. Vishwakarma Government Engineering College, Nr. Visat Three Roads, Visat - Gandhinagar Highway, Chandkheda, Ahmedabad - 382424</p>
-    <p>Email: <a href="mailto:info@gtu.ac.in">info@gtu.ac.in</a> &nbsp;|&nbsp; Phone: +91 79 2326 7500</p>
-    <p>&copy; 2026 Gujarat Technological University. All rights reserved.</p>
-  </footer>
-
+  /* ── INIT ──────────────────────────────── */
+  render();
+</script>
 </body>
 </html>
+            
